@@ -2,7 +2,6 @@
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.CoreMatchers.*;
 //스태틱을 쓰면 클래스없이 자유롭게 쓸 수 있음
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,10 +12,11 @@ import java.sql.SQLException;
 public class UserDaoTest {
 
     private UserDao userDao;
+    private DaoFactory daoFactory;
     @Before   //미리 실행하게 하는 것
     public  void setUp(){
-        userDao = new UserDao(); //솔리드의 l
-
+        daoFactory= new DaoFactory();
+        userDao = daoFactory.getUserDao();
     }
     @Test
     public void get() throws SQLException, ClassNotFoundException {

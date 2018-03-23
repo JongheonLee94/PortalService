@@ -1,7 +1,11 @@
 import java.sql.*;
 
 public class UserDao {
-    private final ConnetionMaker connetionMaker = new JejuConnetionMaker();
+    private final ConnetionMaker connetionMaker;
+
+    public UserDao(ConnetionMaker connetionMaker) {
+        this.connetionMaker = connetionMaker;
+    }
 
 
     public User get(int id) throws ClassNotFoundException, SQLException {
