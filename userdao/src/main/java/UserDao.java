@@ -1,8 +1,11 @@
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
+    private final ConnetionMaker connetionMaker = new JejuConnetionMaker();
+
+
     public User get(int id) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
+        Connection connection = connetionMaker.getConnection();
 
         PreparedStatement preparedStatement =
                 connection.prepareStatement("select * from userinfo where id = ?");
@@ -22,7 +25,7 @@ public abstract class UserDao {
 
 
     public Integer insert(User user) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
+        Connection connection = connetionMaker.getConnection();
         PreparedStatement preparedStatement =
                 connection.prepareStatement(
                         "insert into userinfo(name, password) values (?, ?)");
@@ -43,9 +46,8 @@ public abstract class UserDao {
         return id;
     }
 
-    abstract public Connection getConnection() throws ClassNotFoundException, SQLException;
-//        Class.forName("com.mysql.jdbc.Driver");
-//        return DriverManager.getConnection("jdbc:mysql://localhost/jeju?characterEncoding=utf-8&useSSL=false"
-//                , "root", "0000");
+    public Connection getConnection() throws ClassNotFoundException, SQLException {
+        return connetionMaker.getConnection();
+    }
 
 }

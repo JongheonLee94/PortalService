@@ -13,11 +13,10 @@ import java.sql.SQLException;
 public class UserDaoTest {
 
     private UserDao userDao;
-    private UserDao hallaUserDao;
     @Before   //미리 실행하게 하는 것
     public  void setUp(){
-        userDao = new JejuUserDao(); //솔리드의 l
-        hallaUserDao =new HallaUserDao();
+        userDao = new UserDao(); //솔리드의 l
+
     }
     @Test
     public void get() throws SQLException, ClassNotFoundException {
@@ -43,27 +42,27 @@ public class UserDaoTest {
         assertThat( insertedUser.getPassword(),is(user.getPassword()) );
     }
 
-    @Test
-    public void hallaGet() throws SQLException, ClassNotFoundException {
-
-        int id= 1;
-        User user = hallaUserDao.get(id);
-        assertThat(user.getId(), is(1));
-        assertThat(user.getName(), is("이종헌"));
-        assertThat(user.getPassword(), is("0000"));
-//        Assert.assertEquals(); 기본메소드가 있음
-    }
-
-    @Test
-    public  void halaaAdd() throws SQLException, ClassNotFoundException {
-        User user = new User();
-        user.setName("헐크" );
-        user.setPassword( "1111" );
-        Integer id = hallaUserDao.insert(user); //이렇게 하거나 아니면
-        User insertedUser =hallaUserDao.get(id);  //
-
-        assertThat(insertedUser.getId(),is(id));
-        assertThat( insertedUser.getName(),is(user.getName()) );
-        assertThat( insertedUser.getPassword(),is(user.getPassword()) );
-    }
+//    @Test
+//    public void hallaGet() throws SQLException, ClassNotFoundException {
+//
+//        int id= 1;
+//        User user = hallaUserDao.get(id);
+//        assertThat(user.getId(), is(1));
+//        assertThat(user.getName(), is("이종헌"));
+//        assertThat(user.getPassword(), is("0000"));
+////        Assert.assertEquals(); 기본메소드가 있음
+//    }
+//
+//    @Test
+//    public  void halaaAdd() throws SQLException, ClassNotFoundException {
+//        User user = new User();
+//        user.setName("헐크" );
+//        user.setPassword( "1111" );
+//        Integer id = hallaUserDao.insert(user); //이렇게 하거나 아니면
+//        User insertedUser =hallaUserDao.get(id);  //
+//
+//        assertThat(insertedUser.getId(),is(id));
+//        assertThat( insertedUser.getName(),is(user.getName()) );
+//        assertThat( insertedUser.getPassword(),is(user.getPassword()) );
+//    }
 }
