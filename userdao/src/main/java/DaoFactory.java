@@ -11,28 +11,28 @@ public class DaoFactory {
 
     @Value("${db.classname}")
     private String className;
-    @Value( ("${db.url}") )
+    @Value(("${db.url}"))
     private String url;
-    @Value( "${db.username}" )
+    @Value("${db.username}")
     private String username;
-    @Value( "${db.password}" )
+    @Value("${db.password}")
     private String password;
 
     @Bean
     public UserDao userDao() throws ClassNotFoundException {
-        return new UserDao(dataSource());
+        return new UserDao( dataSource() );
     }
 
     @Bean
     public DataSource dataSource() throws ClassNotFoundException {
-        SimpleDriverDataSource dataSource = new SimpleDriverDataSource(  );
+        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
         try {
             dataSource.setDriverClass( (Class<? extends Driver>) Class.forName( className ) );
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         dataSource.setUrl( url );
-        dataSource.setUsername(username);
+        dataSource.setUsername( username );
         dataSource.setPassword( password );
         return dataSource;
 
