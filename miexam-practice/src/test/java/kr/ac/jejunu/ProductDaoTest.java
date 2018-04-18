@@ -2,6 +2,8 @@ package kr.ac.jejunu;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 
@@ -13,8 +15,8 @@ public class ProductDaoTest {
     DaoFactory daoFactory;
     @Before
     public void setup() {
-        daoFactory = new DaoFactory();
-        productDao = daoFactory.getProductDao(); //원래 각각 두개로 나눠야함 제주 한라
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext( DaoFactory.class );
+        productDao = applicationContext.getBean( "productDao",ProductDao.class );
     }
 
     @Test
