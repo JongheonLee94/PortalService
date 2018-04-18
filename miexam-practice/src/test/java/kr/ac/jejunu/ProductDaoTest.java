@@ -10,10 +10,11 @@ import static org.junit.Assert.assertEquals;
 
 public class ProductDaoTest {
     ProductDao productDao;
-
+    DaoFactory daoFactory;
     @Before
     public void setup() {
-        productDao = new ProductDao(); //원래 각각 두개로 나눠야함 제주 한라
+        daoFactory = new DaoFactory();
+        productDao = daoFactory.getProductDao(); //원래 각각 두개로 나눠야함 제주 한라
     }
 
     @Test
