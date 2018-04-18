@@ -2,7 +2,7 @@ package kr.ac.jejunu;
 
 import java.sql.*;
 
-public class ProductDao {
+public abstract class ProductDao {
     public Product get(Long id) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
 
@@ -48,8 +48,5 @@ public class ProductDao {
 
         return id;
     }
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://localhost/jeju", "jeju", "jejupw");
-    }
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }

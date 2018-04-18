@@ -13,7 +13,7 @@ public class ProductDaoTest {
 
     @Before
     public void setup() {
-        productDao = new ProductDao();
+        productDao = new JejuProductDao(); //원래 각각 두개로 나눠야함 제주 한라
     }
 
     @Test
