@@ -17,7 +17,7 @@ public class ProductDao {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
-        Product product;
+        Product product = null;
         try {
             connection = dataSource.getConnection();
 
@@ -25,12 +25,12 @@ public class ProductDao {
             preparedStatement.setLong(1, id);
 
             resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-
-            product = new Product();
-            product.setId(resultSet.getLong("id"));
-            product.setTitle(resultSet.getString("title"));
-            product.setPrice(resultSet.getInt("price"));
+            if(resultSet.next()) {
+                product = new Product();
+                product.setId( resultSet.getLong( "id" ) );
+                product.setTitle( resultSet.getString( "title" ) );
+                product.setPrice( resultSet.getInt( "price" ) );
+            }
         } finally {
             //자원을 해지한다. 해지하지 않게 되면 쌓여서 시스템이 다운될 수 있으므로 반드시 해지해야하므로 final로 해준다.
             if (resultSet != null) {//resultSet이 null이면 해지할 게 없으므로
@@ -111,4 +111,67 @@ public class ProductDao {
         return id;
     }
 
+    public void uppdate(Product product) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = dataSource.getConnection();
+
+            preparedStatement = connection.prepareStatement( "update product set title = ?, price = ? where id= ? " );
+            preparedStatement.setString( 1, product.getTitle() );
+            preparedStatement.setInt( 2, product.getPrice() );
+            preparedStatement.setLong( 3, product.getId() );
+
+            preparedStatement.executeUpdate();
+
+        } finally {
+            //자원을 해지한다.
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void delete(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = dataSource.getConnection();
+
+            preparedStatement = connection.prepareStatement( "delete from product where id = ?" );
+            preparedStatement.setLong( 1,id );
+
+            preparedStatement.executeUpdate();
+
+        } finally {
+            //자원을 해지한다.
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

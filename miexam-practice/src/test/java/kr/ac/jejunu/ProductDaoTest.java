@@ -7,6 +7,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import java.sql.SQLException;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 
@@ -34,13 +36,44 @@ public class ProductDaoTest {
     @Test
     public void add() throws SQLException, ClassNotFoundException {
         Product product = new Product();
-        product.setTitle( "제주오메기떡" );
-        product.setPrice( 15000 );
-        Long id = productDao.insert( product );
+        Long id = insertProductTest( product );
 
         Product insertedProduct = productDao.get( id );
         assertEquals(insertedProduct.getId(), id);
         assertEquals(insertedProduct.getTitle(), product.getTitle());
         assertEquals(insertedProduct.getPrice(), product.getPrice());
+    }
+
+    private Long insertProductTest(Product product) throws ClassNotFoundException, SQLException {
+        product.setTitle( "제주오메기떡" );
+        product.setPrice( 15000 );
+        return productDao.insert( product );
+    }
+
+    @Test
+    public  void update() throws SQLException, ClassNotFoundException {
+        Product product = new Product();
+        Long id = insertProductTest( product );
+
+        product.setId( id );
+        product.setTitle( "감귤초콜릿" );
+        product.setPrice( 10000 );
+        productDao.uppdate(product);
+
+        Product updatedProduct = productDao.get( id);
+        assertEquals( updatedProduct.getId(),product.getId() );
+        assertEquals( updatedProduct.getTitle(),product.getTitle() );
+        assertEquals( updatedProduct.getPrice(),product.getPrice() );
+
+    }
+    @Test
+    public  void delete() throws SQLException, ClassNotFoundException {
+        Product product = new Product();
+        Long id = insertProductTest( product ); //있어야 삭제하므로
+
+        productDao.delete(id);
+
+        Product deletedProduct = productDao.get( id);
+        assertThat(deletedProduct,nullValue());
     }
 }
