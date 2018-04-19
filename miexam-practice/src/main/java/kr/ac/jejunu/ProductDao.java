@@ -13,8 +13,12 @@ public class ProductDao {
 
     public Product get(Long id) throws  SQLException {
         StatementStrategy statementStrategy = connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from product where id = ?");
-                preparedStatement.setLong(1, id);
+            String sql = "select * from product where id = ?";
+            Object[] params =new Object[] {id};
+            PreparedStatement preparedStatement = connection.prepareStatement( sql );
+            for(int i = 0 ; i<params.length;i++){
+                preparedStatement.setObject( i+1,params[i] );
+            }
                 return preparedStatement;
         };
         return jdbcContext.jdbcContextForGet( statementStrategy );
@@ -32,20 +36,26 @@ public class ProductDao {
     }
 
     public void uppdate(Product product) throws SQLException {
+        String sql = "update product set title = ?, price = ? where id= ? ";
+        Object[] params = new Object[]{product.getTitle(),product.getPrice(),product.getId()};
         StatementStrategy statementStrategy = connection -> {
-                PreparedStatement preparedStatement = connection.prepareStatement( "update product set title = ?, price = ? where id= ? " );
-                preparedStatement.setString( 1, product.getTitle() );
-                preparedStatement.setInt( 2, product.getPrice() );
-                preparedStatement.setLong( 3, product.getId() );
+            PreparedStatement preparedStatement = connection.prepareStatement( sql );
+            for(int i=0; i<params.length;i++){
+                preparedStatement.setObject( i+1,params[i] );
+            }
                 return preparedStatement;
         };
         jdbcContext.jdbcContextForUpdate( statementStrategy );
     }
 
     public void delete(Long id) throws SQLException {
+        String sql = "delete from product where id = ?";
+        Object[] params = new Object[]{id};
         StatementStrategy statementStrategy =connection -> {
-                PreparedStatement preparedStatement = connection.prepareStatement( "delete from product where id = ?" );
-                preparedStatement.setLong( 1,id );
+            PreparedStatement preparedStatement = connection.prepareStatement( sql );
+            for(int i=0; i<params.length;i++){
+                preparedStatement.setObject( i+1,params[i] );
+            }
                 return preparedStatement;
         };
         jdbcContext.jdbcContextForUpdate( statementStrategy );
