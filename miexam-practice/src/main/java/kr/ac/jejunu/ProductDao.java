@@ -15,13 +15,17 @@ public class ProductDao {
 
 
     public Product get(Long id) throws ClassNotFoundException, SQLException {
+            StatementStrategy statementStrategy = new GetProductStatementStrategy(id);
+        return jdbcContextForGet( statementStrategy );
+    }
+
+    private Product jdbcContextForGet(StatementStrategy statementStrategy) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Product product = null;
         try {
             connection = dataSource.getConnection();
-            StatementStrategy statementStrategy = new GetProductStatementStrategy(id);
             preparedStatement = statementStrategy.makeStatement( connection );
 
 
@@ -56,21 +60,22 @@ public class ProductDao {
                 }
             }
         }
-
-
-
         return product;
     }
 
 
     public Long insert(Product product) throws ClassNotFoundException, SQLException {
+            StatementStrategy statementStrategy = new InsertProductStatementStrategy(product);
+        return jdbcContextForInsert( statementStrategy );
+    }
+
+    private Long jdbcContextForInsert(StatementStrategy statementStrategy) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Long id;
         try {
             connection = dataSource.getConnection();
-            StatementStrategy statementStrategy = new InsertProductStatementStrategy(product);
             preparedStatement = statementStrategy.makeStatement( connection );
 
             preparedStatement.executeUpdate();
@@ -103,19 +108,25 @@ public class ProductDao {
                 }
             }
         }
-
-
-
         return id;
     }
 
     public void uppdate(Product product) throws SQLException {
+            StatementStrategy statementStrategy =new UpdateProductStatementStrategy(product);
+        jdbcContextForUpdate( statementStrategy );
+    }
+
+    public void delete(Long id) throws SQLException {
+            StatementStrategy statementStrategy = new DeleteProductStamentStrategy(id);
+        jdbcContextForUpdate( statementStrategy );
+    }
+
+    private void jdbcContextForUpdate(StatementStrategy statementStrategy) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
             connection = dataSource.getConnection();
-            StatementStrategy statementStrategy =new UpdateProductStatementStrategy(product);
             preparedStatement = statementStrategy.makeStatement( connection );
 
             preparedStatement.executeUpdate();
@@ -139,35 +150,4 @@ public class ProductDao {
         }
     }
 
-
-    public void delete(Long id) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            connection = dataSource.getConnection();
-            StatementStrategy statementStrategy = new DeleteProductStamentStrategy(id);
-            preparedStatement =statementStrategy.makeStatement( connection );
-
-
-            preparedStatement.executeUpdate();
-
-        } finally {
-            //자원을 해지한다.
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 }
