@@ -10,9 +10,19 @@ public class ProductDao {
     public ProductDao(JdbcContext jdbcContext) {
         this.jdbcContext = jdbcContext;
     }
-    
+
     public Product get(Long id) throws  SQLException {
-            StatementStrategy statementStrategy = new GetProductStatementStrategy(id);
+        Long id1 = id;
+        StatementStrategy statementStrategy = new StatementStrategy() {
+            private Long id = id1;
+
+            @Override
+            public PreparedStatement makeStatement(Connection connection) throws SQLException {
+                PreparedStatement preparedStatement = connection.prepareStatement("select * from product where id = ?");
+                preparedStatement.setLong(1, id);
+                return preparedStatement;
+            }
+        };
         return jdbcContext.jdbcContextForGet( statementStrategy );
     }
 
