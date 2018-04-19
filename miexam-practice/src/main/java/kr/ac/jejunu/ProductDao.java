@@ -12,39 +12,42 @@ public class ProductDao {
     }
 
     public Product get(Long id) throws  SQLException {
-        Long id1 = id;
-        //람다표현식 자바 1.8부터
         StatementStrategy statementStrategy = connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement("select * from product where id = ?");
                 preparedStatement.setLong(1, id);
                 return preparedStatement;
         };
-
-//               PreparedStatement preparedStatement  new StatementStrategy() {
-//            private Long id = id1;
-//
-//            @Override
-//            public PreparedStatement makeStatement(Connection connection) throws SQLException {
-//                PreparedStatement preparedStatement = connection.prepareStatement("select * from product where id = ?");
-//                preparedStatement.setLong(1, id);
-//                return preparedStatement;
-//            }
-//        };
         return jdbcContext.jdbcContextForGet( statementStrategy );
     }
 
     public Long insert(Product product) throws  SQLException {
-            StatementStrategy statementStrategy = new InsertProductStatementStrategy(product);
+        StatementStrategy statementStrategy =connection -> {
+                PreparedStatement preparedStatement = connection.prepareStatement("insert into product(title, price)  value(?,?) ", Statement.RETURN_GENERATED_KEYS);
+                preparedStatement.setString(1, product.getTitle());
+                preparedStatement.setInt(2, product.getPrice());
+                return preparedStatement;
+
+        };
         return jdbcContext.jdbcContextForInsert( statementStrategy );
     }
 
     public void uppdate(Product product) throws SQLException {
-            StatementStrategy statementStrategy =new UpdateProductStatementStrategy(product);
+        StatementStrategy statementStrategy = connection -> {
+                PreparedStatement preparedStatement = connection.prepareStatement( "update product set title = ?, price = ? where id= ? " );
+                preparedStatement.setString( 1, product.getTitle() );
+                preparedStatement.setInt( 2, product.getPrice() );
+                preparedStatement.setLong( 3, product.getId() );
+                return preparedStatement;
+        };
         jdbcContext.jdbcContextForUpdate( statementStrategy );
     }
 
     public void delete(Long id) throws SQLException {
-            StatementStrategy statementStrategy = new DeleteProductStamentStrategy(id);
+        StatementStrategy statementStrategy =connection -> {
+                PreparedStatement preparedStatement = connection.prepareStatement( "delete from product where id = ?" );
+                preparedStatement.setLong( 1,id );
+                return preparedStatement;
+        };
         jdbcContext.jdbcContextForUpdate( statementStrategy );
     }
 
