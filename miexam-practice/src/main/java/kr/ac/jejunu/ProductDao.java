@@ -38,28 +38,14 @@ public class ProductDao {
     public void uppdate(Product product) throws SQLException {
         String sql = "update product set title = ?, price = ? where id= ? ";
         Object[] params = new Object[]{product.getTitle(),product.getPrice(),product.getId()};
-        StatementStrategy statementStrategy = connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement( sql );
-            for(int i=0; i<params.length;i++){
-                preparedStatement.setObject( i+1,params[i] );
-            }
-                return preparedStatement;
-        };
-        jdbcContext.jdbcContextForUpdate( statementStrategy );
+        jdbcContext.update( sql, params );
     }
+
 
     public void delete(Long id) throws SQLException {
         String sql = "delete from product where id = ?";
         Object[] params = new Object[]{id};
-        StatementStrategy statementStrategy =connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement( sql );
-            for(int i=0; i<params.length;i++){
-                preparedStatement.setObject( i+1,params[i] );
-            }
-                return preparedStatement;
-        };
-        jdbcContext.jdbcContextForUpdate( statementStrategy );
+        jdbcContext.update( sql, params );
     }
-
 
 }
