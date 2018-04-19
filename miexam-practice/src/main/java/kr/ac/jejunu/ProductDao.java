@@ -1,6 +1,8 @@
 package kr.ac.jejunu;
 
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -18,7 +20,17 @@ public class ProductDao {
     public Product get(Long id) throws SQLException {
         String sql = "select * from product where id = ?";
         Object[] params = new Object[]{id};
-        return jdbcTemplate.queryForObject( sql, params );
+        try {
+            return jdbcTemplate.queryForObject( sql, params , (rs, rowNum)->{
+                Product product = new Product();
+                product.setId( rs.getLong( "id" ) );
+                product.setTitle( rs.getString( "title" ) );
+                product.setPrice( rs.getInt( "price" ) );
+                return product;
+            } );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public Long insert(Product product) throws SQLException {
