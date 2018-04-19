@@ -11,36 +11,23 @@ public class ProductDao {
         this.jdbcContext = jdbcContext;
     }
 
-    public Product get(Long id) throws  SQLException {
-        StatementStrategy statementStrategy = connection -> {
-            String sql = "select * from product where id = ?";
-            Object[] params =new Object[] {id};
-            PreparedStatement preparedStatement = connection.prepareStatement( sql );
-            for(int i = 0 ; i<params.length;i++){
-                preparedStatement.setObject( i+1,params[i] );
-            }
-                return preparedStatement;
-        };
-        return jdbcContext.jdbcContextForGet( statementStrategy );
+    public Product get(Long id) throws SQLException {
+        String sql = "select * from product where id = ?";
+        Object[] params = new Object[]{id};
+        return jdbcContext.queryForObject( sql, params );
     }
 
-    public Long insert(Product product) throws  SQLException {
-        StatementStrategy statementStrategy =connection -> {
-                PreparedStatement preparedStatement = connection.prepareStatement("insert into product(title, price)  value(?,?) ", Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setString(1, product.getTitle());
-                preparedStatement.setInt(2, product.getPrice());
-                return preparedStatement;
-
-        };
-        return jdbcContext.jdbcContextForInsert( statementStrategy );
+    public Long insert(Product product) throws SQLException {
+        String sql = "insert into product(title, price)  value(?,?) ";
+        Object[] params = new Object[]{product.getTitle(), product.getPrice()};
+        return jdbcContext.insert( sql, params );
     }
 
     public void uppdate(Product product) throws SQLException {
         String sql = "update product set title = ?, price = ? where id= ? ";
-        Object[] params = new Object[]{product.getTitle(),product.getPrice(),product.getId()};
+        Object[] params = new Object[]{product.getTitle(), product.getPrice(), product.getId()};
         jdbcContext.update( sql, params );
     }
-
 
     public void delete(Long id) throws SQLException {
         String sql = "delete from product where id = ?";
