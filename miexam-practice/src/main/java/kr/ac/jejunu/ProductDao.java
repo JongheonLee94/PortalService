@@ -13,16 +13,23 @@ public class ProductDao {
 
     public Product get(Long id) throws  SQLException {
         Long id1 = id;
-        StatementStrategy statementStrategy = new StatementStrategy() {
-            private Long id = id1;
-
-            @Override
-            public PreparedStatement makeStatement(Connection connection) throws SQLException {
-                PreparedStatement preparedStatement = connection.prepareStatement("select * from product where id = ?");
+        //람다표현식 자바 1.8부터
+        StatementStrategy statementStrategy = connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from product where id = ?");
                 preparedStatement.setLong(1, id);
                 return preparedStatement;
-            }
         };
+
+//               PreparedStatement preparedStatement  new StatementStrategy() {
+//            private Long id = id1;
+//
+//            @Override
+//            public PreparedStatement makeStatement(Connection connection) throws SQLException {
+//                PreparedStatement preparedStatement = connection.prepareStatement("select * from product where id = ?");
+//                preparedStatement.setLong(1, id);
+//                return preparedStatement;
+//            }
+//        };
         return jdbcContext.jdbcContextForGet( statementStrategy );
     }
 
