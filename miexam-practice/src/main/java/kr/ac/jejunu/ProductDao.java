@@ -13,23 +13,32 @@ public class ProductDao {
 
 
     public Product get(Long id) throws ClassNotFoundException, SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from product where id = ?");
-        preparedStatement.setLong(1, id);
+        Product product;
+        try {
+            connection = dataSource.getConnection();
 
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
+            preparedStatement = connection.prepareStatement("select * from product where id = ?");
+            preparedStatement.setLong(1, id);
 
-        Product product = new Product();
-        product.setId(resultSet.getLong("id"));
-        product.setTitle(resultSet.getString("title"));
-        product.setPrice(resultSet.getInt("price"));
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
 
-        //자원을 해지한다.
-        resultSet.close();
-        preparedStatement.close();
-        connection.close();
+            product = new Product();
+            product.setId(resultSet.getLong("id"));
+            product.setTitle(resultSet.getString("title"));
+            product.setPrice(resultSet.getInt("price"));
+        } finally {
+            //자원을 해지한다.
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }
+
+
 
         return product;
     }

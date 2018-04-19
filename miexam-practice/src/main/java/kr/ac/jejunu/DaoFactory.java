@@ -1,5 +1,6 @@
 package kr.ac.jejunu;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -10,10 +11,15 @@ import java.sql.Driver;
 
 @Configuration
 public class DaoFactory {
-    private String className= "com.mysql.jdbc.Driver" ;
-    private String url="jdbc:mysql://localhost/jeju";
-    private String userName="jeju" ;
-    private String password="jejupw" ;
+    @Value( "${db.classname}" )
+    private String className ;
+    @Value( "${db.url}" )
+    private String url;
+    @Value( "${db.username}" )
+    private String userName;
+    @Value( "${db.password}" )
+    private String password ;
+
     @Bean
     public ProductDao productDao(){
         return new ProductDao( datasource() );
