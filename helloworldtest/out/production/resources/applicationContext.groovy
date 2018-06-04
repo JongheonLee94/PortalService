@@ -5,8 +5,8 @@ beans {
     hello(HelloImpl){
 
     }
-    helloPerson(HelloPerson){
+    helloPerson(HelloPerson, hello){ //그루비는 파라미터에 넣어서 construct 인젝션함
         name = '허윤호'
-        hello = hello
+
     }
 }

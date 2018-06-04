@@ -5,7 +5,8 @@
     <bean class="kr.ac.jejunu.Hello.HelloImpl" name="hello"/>
     <bean name="helloPerson" class="kr.ac.jejunu.Hello.HelloPerson">
         <property name="name" value="허윤호"/>
-        <property name="hello" ref="hello" />
+        <constructor-arg name="hello" ref="hello" />
+        <!--construct쓸때-->
     </bean>
 
 </beans>
