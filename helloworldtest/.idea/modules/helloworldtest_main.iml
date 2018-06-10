@@ -5,6 +5,9 @@
       <configuration>
         <fileset id="fileset" name="ApplicationContext" removed="false">
           <file>file://$MODULE_DIR$/../../src/main/resources/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../src/main/webapp/WEB-INF/root-context.xml</file>
+          <file>file://$MODULE_DIR$/../../src/main/webapp/WEB-INF/dispacher-servlet.xml</file>
+          <file>file://$MODULE_DIR$/../../src/main/webapp/WEB-INF/dispatcher-servlet.xml</file>
         </fileset>
       </configuration>
     </facet>
