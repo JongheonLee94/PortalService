@@ -7,7 +7,6 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @Slf4j
-@WebListener
 public class HelloCotextListener implements ServletContextListener{
     @Override
     public void contextInitialized(ServletContextEvent sce) {

@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebListener;
 
 
 @Slf4j
-@WebListener
 public class HelloRequestListenner implements ServletRequestListener {
     @Override
     public void requestDestroyed(ServletRequestEvent sre) {
