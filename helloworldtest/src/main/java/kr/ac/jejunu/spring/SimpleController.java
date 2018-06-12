@@ -1,5 +1,6 @@
 package kr.ac.jejunu.spring;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,12 +15,14 @@ import java.io.*;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("helloworld")
+@Slf4j
 public class SimpleController  {
 
     @RequestMapping("/hi")
     public ModelAndView hello() {
-//        ModelAndView modelAndView = new ModelAndView( "hello" );
-        ModelAndView modelAndView = null;
+        log.info( "*********** handler*******************" );
+        ModelAndView modelAndView = new ModelAndView( "hello" );
+//        ModelAndView modelAndView = null;
         modelAndView.addObject( "hello", "Hello world!!!" );
         return modelAndView;
     }

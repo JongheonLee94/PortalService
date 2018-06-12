@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 @Slf4j
+@WebFilter
 public class HelloFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

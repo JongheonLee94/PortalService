@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 
 @Slf4j
-@Controller("/hello")
+@WebServlet(urlPatterns = "/hello")
 public class HelloServlet extends GenericServlet
 {
 
