@@ -19,6 +19,7 @@ public class HelloInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         //인터셉트해서 뷰 등 바꿀 수 있음
         log.info( "******************* postHandle *************************" );
+        if(modelAndView!=null)
         log.info( (String)modelAndView.getModel().get( "hello" ) );
 
     }
