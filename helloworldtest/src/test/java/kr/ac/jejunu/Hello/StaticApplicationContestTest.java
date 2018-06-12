@@ -18,16 +18,16 @@ public class StaticApplicationContestTest {
         Hello hello = staticApplicationContext.getBean( "hello" , Hello.class);
         assertThat(hello.sayHello(),is("Hello!!!"));
     }
-    @Test
-    public void staticApplicationContextTithDI(){
-        StaticApplicationContext applicationContext = new StaticApplicationContext(  );
-        applicationContext.registerSingleton( "hello" ,HelloPerson.class);
-        BeanDefinition beanDefinition = new RootBeanDefinition( HelloPerson.class );
-        beanDefinition.getPropertyValues().addPropertyValue( "name","허윤호" );
-//        beanDefinition.getConstructorArgumentValues().addGenericArgumentValue("hello");  //이걸로 스태틱은 construct씀
-        beanDefinition.getPropertyValues().addPropertyValue( "hello",new RuntimeBeanNameReference( "hello" ) );
-        applicationContext.registerBeanDefinition( "helloPerson", beanDefinition );
-        Hello hello =applicationContext.getBean( "helloPerson", Hello.class );
-        assertThat( hello.sayHello(),is("hello!!! 허윤호") );
-    }
+//    @Test
+//    public void staticApplicationContextTithDI(){
+//        StaticApplicationContext applicationContext = new StaticApplicationContext(  );
+//        applicationContext.registerSingleton( "hello" ,HelloPerson.class);
+//        BeanDefinition beanDefinition = new RootBeanDefinition( HelloPerson.class );
+//        beanDefinition.getPropertyValues().addPropertyValue( "name","허윤호" );
+////        beanDefinition.getConstructorArgumentValues().addGenericArgumentValue("hello");  //이걸로 스태틱은 construct씀
+//        beanDefinition.getPropertyValues().addPropertyValue( "hello",new RuntimeBeanNameReference( "hello" ) );
+//        applicationContext.registerBeanDefinition( "helloPerson", beanDefinition );
+//        Hello hello =applicationContext.getBean( "helloPerson", Hello.class );
+//        assertThat( hello.sayHello(),is("hello!!! 허윤호") );
+//    }
 }
