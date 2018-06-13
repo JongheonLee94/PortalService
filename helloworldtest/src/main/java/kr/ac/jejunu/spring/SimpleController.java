@@ -40,6 +40,7 @@ public class SimpleController  {
         FileOutputStream fileOutputStream = new FileOutputStream( path );
         BufferedOutputStream bufferedInputStream = new BufferedOutputStream( fileOutputStream );
         bufferedInputStream.write( file.getBytes() );
+        bufferedInputStream.close();
         ModelAndView modelAndView = new ModelAndView( "upload" );
         modelAndView.addObject( "url","/images/"+file.getOriginalFilename() );
         return modelAndView;
