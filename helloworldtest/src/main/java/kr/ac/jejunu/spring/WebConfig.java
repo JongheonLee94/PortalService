@@ -20,6 +20,13 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        if(configurer.getUrlPathHelper() != null) {
+            configurer.getUrlPathHelper().setRemoveSemicolonContent( false );
+        }
+    }
+
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor( new HelloInterceptor() );
     }
